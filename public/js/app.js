@@ -6935,7 +6935,7 @@ try {
 }
 
 function Sizzle( selector, context, results, seed ) {
-	var m, i, elem, nid, match, groups, newSelector,
+	var m, i, elem, nid, match, groups, workelector,
 		newContext = context && context.ownerDocument,
 
 		// nodeType defaults to 9, since context defaults to document
@@ -7017,7 +7017,7 @@ function Sizzle( selector, context, results, seed ) {
 				// Exclude object elements
 				( nodeType !== 1 || context.nodeName.toLowerCase() !== "object" ) ) {
 
-				newSelector = selector;
+				workelector = selector;
 				newContext = context;
 
 				// qSA considers elements outside a scoping root when evaluating child or
@@ -7053,12 +7053,12 @@ function Sizzle( selector, context, results, seed ) {
 						groups[ i ] = ( nid ? "#" + nid : ":scope" ) + " " +
 							toSelector( groups[ i ] );
 					}
-					newSelector = groups.join( "," );
+					workelector = groups.join( "," );
 				}
 
 				try {
 					push.apply( results,
-						newContext.querySelectorAll( newSelector )
+						newContext.querySelectorAll( workelector )
 					);
 					return results;
 				} catch ( qsaError ) {
@@ -41542,12 +41542,12 @@ function updateChildComponent (
   // check if there are dynamic scopedSlots (hand-written or compiled but with
   // dynamic slot names). Static scoped slots compiled from template has the
   // "$stable" marker.
-  var newScopedSlots = parentVnode.data.scopedSlots;
+  var workcopedSlots = parentVnode.data.scopedSlots;
   var oldScopedSlots = vm.$scopedSlots;
   var hasDynamicScopedSlot = !!(
-    (newScopedSlots && !newScopedSlots.$stable) ||
+    (workcopedSlots && !workcopedSlots.$stable) ||
     (oldScopedSlots !== emptyObject && !oldScopedSlots.$stable) ||
-    (newScopedSlots && vm.$scopedSlots.$key !== newScopedSlots.$key)
+    (workcopedSlots && vm.$scopedSlots.$key !== workcopedSlots.$key)
   );
 
   // Any static slot children from the parent may have changed during parent's
@@ -43597,12 +43597,12 @@ function createPatchFunction (backend) {
 
   function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
     var oldStartIdx = 0;
-    var newStartIdx = 0;
+    var worktartIdx = 0;
     var oldEndIdx = oldCh.length - 1;
     var oldStartVnode = oldCh[0];
     var oldEndVnode = oldCh[oldEndIdx];
     var newEndIdx = newCh.length - 1;
-    var newStartVnode = newCh[0];
+    var worktartVnode = newCh[0];
     var newEndVnode = newCh[newEndIdx];
     var oldKeyToIdx, idxInOld, vnodeToMove, refElm;
 
@@ -43615,15 +43615,15 @@ function createPatchFunction (backend) {
       checkDuplicateKeys(newCh);
     }
 
-    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+    while (oldStartIdx <= oldEndIdx && worktartIdx <= newEndIdx) {
       if (isUndef(oldStartVnode)) {
         oldStartVnode = oldCh[++oldStartIdx]; // Vnode has been moved left
       } else if (isUndef(oldEndVnode)) {
         oldEndVnode = oldCh[--oldEndIdx];
-      } else if (sameVnode(oldStartVnode, newStartVnode)) {
-        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+      } else if (sameVnode(oldStartVnode, worktartVnode)) {
+        patchVnode(oldStartVnode, worktartVnode, insertedVnodeQueue, newCh, worktartIdx);
         oldStartVnode = oldCh[++oldStartIdx];
-        newStartVnode = newCh[++newStartIdx];
+        worktartVnode = newCh[++worktartIdx];
       } else if (sameVnode(oldEndVnode, newEndVnode)) {
         patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue, newCh, newEndIdx);
         oldEndVnode = oldCh[--oldEndIdx];
@@ -43633,36 +43633,36 @@ function createPatchFunction (backend) {
         canMove && nodeOps.insertBefore(parentElm, oldStartVnode.elm, nodeOps.nextSibling(oldEndVnode.elm));
         oldStartVnode = oldCh[++oldStartIdx];
         newEndVnode = newCh[--newEndIdx];
-      } else if (sameVnode(oldEndVnode, newStartVnode)) { // Vnode moved left
-        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+      } else if (sameVnode(oldEndVnode, worktartVnode)) { // Vnode moved left
+        patchVnode(oldEndVnode, worktartVnode, insertedVnodeQueue, newCh, worktartIdx);
         canMove && nodeOps.insertBefore(parentElm, oldEndVnode.elm, oldStartVnode.elm);
         oldEndVnode = oldCh[--oldEndIdx];
-        newStartVnode = newCh[++newStartIdx];
+        worktartVnode = newCh[++worktartIdx];
       } else {
         if (isUndef(oldKeyToIdx)) { oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx); }
-        idxInOld = isDef(newStartVnode.key)
-          ? oldKeyToIdx[newStartVnode.key]
-          : findIdxInOld(newStartVnode, oldCh, oldStartIdx, oldEndIdx);
+        idxInOld = isDef(worktartVnode.key)
+          ? oldKeyToIdx[worktartVnode.key]
+          : findIdxInOld(worktartVnode, oldCh, oldStartIdx, oldEndIdx);
         if (isUndef(idxInOld)) { // New element
-          createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
+          createElm(worktartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, worktartIdx);
         } else {
           vnodeToMove = oldCh[idxInOld];
-          if (sameVnode(vnodeToMove, newStartVnode)) {
-            patchVnode(vnodeToMove, newStartVnode, insertedVnodeQueue, newCh, newStartIdx);
+          if (sameVnode(vnodeToMove, worktartVnode)) {
+            patchVnode(vnodeToMove, worktartVnode, insertedVnodeQueue, newCh, worktartIdx);
             oldCh[idxInOld] = undefined;
             canMove && nodeOps.insertBefore(parentElm, vnodeToMove.elm, oldStartVnode.elm);
           } else {
             // same key but different element. treat as new element
-            createElm(newStartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, newStartIdx);
+            createElm(worktartVnode, insertedVnodeQueue, parentElm, oldStartVnode.elm, false, newCh, worktartIdx);
           }
         }
-        newStartVnode = newCh[++newStartIdx];
+        worktartVnode = newCh[++worktartIdx];
       }
     }
     if (oldStartIdx > oldEndIdx) {
       refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm;
-      addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue);
-    } else if (newStartIdx > newEndIdx) {
+      addVnodes(parentElm, refElm, newCh, worktartIdx, newEndIdx, insertedVnodeQueue);
+    } else if (worktartIdx > newEndIdx) {
       removeVnodes(oldCh, oldStartIdx, oldEndIdx);
     }
   }
@@ -45277,15 +45277,15 @@ function updateStyle (oldVnode, vnode) {
     ? extend({}, style)
     : style;
 
-  var newStyle = getStyle(vnode, true);
+  var worktyle = getStyle(vnode, true);
 
   for (name in oldStyle) {
-    if (isUndef(newStyle[name])) {
+    if (isUndef(worktyle[name])) {
       setProp(el, name, '');
     }
   }
-  for (name in newStyle) {
-    cur = newStyle[name];
+  for (name in worktyle) {
+    cur = worktyle[name];
     if (cur !== oldStyle[name]) {
       // ie9 setting to null has no effect, must use empty string
       setProp(el, name, cur == null ? '' : cur);
