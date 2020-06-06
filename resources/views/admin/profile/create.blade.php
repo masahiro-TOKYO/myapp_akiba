@@ -1,5 +1,5 @@
-{{-- layouts/admin.blade.phpを読み込む --}}
-@extends('layouts.admin')
+{{-- layouts/profile.blade.phpを読み込む --}}
+@extends('layouts.profile')
 
 {{-- @yield('title') に'the work'を埋め込む --}}
 @section('title', 'profile')
@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h3>profile</h3>
-                <form action="{{ action('Admin\WorkController@create') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ action('Admin\ProfileController@create') }}" method="post" enctype="multipart/form-data">
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)
@@ -18,6 +18,12 @@
                             @endforeach
                         </ul>
                     @endif
+                    <div class="form-group row">
+                        <label class="col-md-2">プロフィール画像</label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="image">
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-md-2">ニックネーム</label>
                         <div class="col-md-10">
@@ -28,7 +34,7 @@
                         <label class="col-md-2">ジョブ</label>
                         <div class="col-md-10">
                             <select class="select" name="job" value="{{ old('job') }}">
-                                <option value="model">モデル</option>
+                                <option value="actor">モデル</option>
                                 <option value="creater">クリエイター</option>
                             </select>    
                         </div>

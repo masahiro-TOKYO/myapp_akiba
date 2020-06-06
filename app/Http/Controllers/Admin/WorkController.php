@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Work;
 
-class workController extends Controller
+class WorkController extends Controller
 {
     //
     public function add()
@@ -15,9 +16,9 @@ class workController extends Controller
     
     public function create(Request $request)
     {
-        $this->validate($request, work::$rules);
+        $this->validate($request, Work::$rules);
         
-        $work = new work;
+        $work = new Work;
         $form =$request->all();
         
         if(isset($form['image'])) {
@@ -34,5 +35,54 @@ class workController extends Controller
         $work->save();
         
         return redirect('admin/work/create');
+    }
+    public function index(Request $request) 
+    {
+        $cond_title = $request->cond_title;
+        if ($cond_title != '' ) {
+            $posts = Work::where('title', $cond_tilte)->get();
+        } else {
+            $posts = Work::all();
+            }
+            $posts = Work::all()->sortByDesc('updated_at');
+
+        if (count($posts) > 0) {
+            $headline = $posts->shift();
+        } else {
+            $headline = null;
+        }
+
+        return view('admin.work.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+            
+    }
+    public function edit(Request $request)
+    {
+        $work = Work::find($request->id);
+        if (empty($work)){
+            abort(404);
+        }
+    return view('admin.work.edit', ['work_form' => $work]);
+    }
+    
+    public function update(Request $request)
+    {
+        // validation
+        $this->validate($request, Work::$rules);
+        // Work model id を取得 
+        $work = Work::find($request->id);
+        // データの格納
+        $work_form = $request->all();
+        if (isset($work_form['image'])) {
+            $path = $request->file('image')->store('public/image');
+            unset($work_form['image']);
+        } elseif (isset($request->remove)) {
+            $work->image_path = null;
+            unset($work_form['remove']);
+        }
+        unset($work_form['_token']);
+        // データを上書き保存
+        $work->fill($work_form)->save();
+        
+        return redirect('admin/work');
     }
 }

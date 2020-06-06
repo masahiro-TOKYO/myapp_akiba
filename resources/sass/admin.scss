@@ -35,3 +35,20 @@ body {
 .login-body {
     background-color:rgba(0,0,0,0.25);
 }
+
+.list-work {
+    background-color: #515151;
+    padding-right: 15px; 
+    padding-left: 15px; 
+    margin-right: auto; 
+    margin-left: auto; 
+    
+    img {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        float: left;
+        width: 180px;
+        height: 180px;
+        
+    }
+}
