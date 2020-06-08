@@ -9,12 +9,17 @@ use App\Work;
 class WorkController extends Controller
 {
     //
-    public function add()
+    public function actor_add()
     {
-        return view('admin.work.create');
+        return view('work.actor.create');
+    }
+    public function creator_add()
+    {
+        return view('work.creator.create');
     }
     
-    public function create(Request $request)
+    
+    public function actor_create(Request $request)
     {
         $this->validate($request, Work::$rules);
         
@@ -34,9 +39,32 @@ class WorkController extends Controller
         $work->fill($form);
         $work->save();
         
-        return redirect('admin/work/create');
+        return redirect('work.actor.create');
     }
-    public function index(Request $request) 
+    public function creator_create(Request $request)
+    {
+        $this->validate($request, Work::$rules);
+        
+        $work = new Work;
+        $form =$request->all();
+        
+        if(isset($form['image'])) {
+            $path = $request->file('image')->store('public/image');
+            $work->image_path = basename($path);
+        }else {
+            $work->image_path = null;
+        }
+        
+        unset($form['_token']);
+        unset($form['image']);
+        
+        $work->fill($form);
+        $work->save();
+        
+        return redirect('work.creator.create');
+    }
+    
+    public function actor_index(Request $request) 
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
@@ -52,7 +80,26 @@ class WorkController extends Controller
             $headline = null;
         }
 
-        return view('admin.work.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('work.actor.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+            
+    }
+    public function creator_index(Request $request) 
+    {
+        $cond_title = $request->cond_title;
+        if ($cond_title != '' ) {
+            $posts = Work::where('title', $cond_tilte)->get();
+        } else {
+            $posts = Work::all();
+            }
+            $posts = Work::all()->sortByDesc('updated_at');
+
+        if (count($posts) > 0) {
+            $headline = $posts->shift();
+        } else {
+            $headline = null;
+        }
+
+        return view('creator.work.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
             
     }
     public function edit(Request $request)
@@ -61,7 +108,7 @@ class WorkController extends Controller
         if (empty($work)){
             abort(404);
         }
-    return view('admin.work.edit', ['work_form' => $work]);
+    return view('work.edit', ['work_form' => $work]);
     }
     
     public function update(Request $request)
@@ -83,6 +130,6 @@ class WorkController extends Controller
         // データを上書き保存
         $work->fill($work_form)->save();
         
-        return redirect('admin/work');
+        return redirect('work');
     }
 }

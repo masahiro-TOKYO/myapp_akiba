@@ -8,13 +8,23 @@ use App\Profile;
 
 class ProfileController extends Controller
 {
-    //
-    public function add()
+    
+    public function choice_job()
     {
-        return view('admin.profile.create');
+        return view('profile.choice_job');
     }
+    
+    public function actor_add()
+    {
+        return view('profile.actor.create');
+    }
+    public function creator_add()
+    {
+        return view('profile.creator.create');
+    }
+    
 
-    public function create()
+    public function actor_create()
     {
         $this->validate($request, Profile::$rules);
         $profile = new Profile;
@@ -39,10 +49,39 @@ class ProfileController extends Controller
         $profile->save();
         
         
-        return redirect('admin/profile/create');
+        return redirect('profile/actor/create');
         
     }
-    public function index(Request $request) 
+    public function creator_create()
+    {
+        $this->validate($request, Profile::$rules);
+        $profile = new Profile;
+        $form = $request->all();
+        
+        unset($form['_token']);
+        
+        $profile->fill($form);
+        $profile->save();
+        
+        if(isset($form['image'])) {
+            $path = $request->file('image')->store('public/image');
+            $profile->image_path = basename($path);
+        }else {
+            $profile->image_path = null;
+        }
+        
+        unset($form['_token']);
+        unset($form['image']);
+        
+        $profile->fill($form);
+        $profile->save();
+        
+        
+        return redirect('profile/creator/create');
+        
+    }
+    
+    public function actor_index(Request $request) 
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
@@ -57,17 +96,35 @@ class ProfileController extends Controller
         } else {
             $headline = null;
         }
-        return view('admin.profile.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('actor.profile.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+    }
+    
+    public function creator_index(Request $request) 
+    {
+        $cond_title = $request->cond_title;
+        if ($cond_title != '' ) {
+            $posts = Profile::where('title', $cond_tilte)->get();
+        } else {
+            $posts = Profile::all();
+            }
+            $posts = Profile::all()->sortByDesc('updated_at');
+
+        if (count($posts) > 0) {
+            $headline = $posts->shift();
+        } else {
+            $headline = null;
+        }
+        return view('creator.profile.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
     }
     
     public function edit()
     {
-        return view ('admin.profile.edit');
+        return view ('profile.edit');
     }
 
     public function update()
     {
-        return redirect('admin/profile/edit');
+        return redirect('profile/edit');
     }
 }
 

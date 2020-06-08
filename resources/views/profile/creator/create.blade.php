@@ -2,15 +2,15 @@
 @extends('layouts.profile')
 
 {{-- @yield('title') に'the work'を埋め込む --}}
-@section('title', 'profile')
+@section('title', 'creator profile')
 
 {{-- @yield('content') に'以下のbootstapsのシステム'を埋め込む --}}
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h3>profile</h3>
-                <form action="{{ action('Admin\ProfileController@create') }}" method="post" enctype="multipart/form-data">
+                <h3>creator profile</h3>
+                <form action="{{ action('Admin\ProfileController@creator_create') }}" method="post" enctype="multipart/form-data">
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)
@@ -28,15 +28,6 @@
                         <label class="col-md-2">ニックネーム</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-2">ジョブ</label>
-                        <div class="col-md-10">
-                            <select class="select" name="job" value="{{ old('job') }}">
-                                <option value="actor">モデル</option>
-                                <option value="creater">クリエイター</option>
-                            </select>    
                         </div>
                     </div>
                     <div class="form-group row">
