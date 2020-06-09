@@ -17,11 +17,9 @@ class CreateProfileTable extends Migration
             $table->bigIncrements('id');
             $table->string('image_path')->nullabale();
             $table->string('name');
-            $table->string('job');
             $table->string('age');
             $table->string('gender');
             $table->string('area');
-            $table->string('introduction');
             $table->timestamps();
         });
     }
