@@ -2,7 +2,7 @@
 @extends('layouts.profile')
 
 {{-- @yield('title') に'the work'を埋め込む --}}
-@section('title', 'actor profile')
+@section('title', 'model profile')
 
 {{-- @yield('content') に'以下のbootstapsのシステム'を埋め込む --}}
 @section('content')
