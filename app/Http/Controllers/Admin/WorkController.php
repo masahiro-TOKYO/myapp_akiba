@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Work;
+use App\ActorWork;
+use App\CreatorWork;
 
 class WorkController extends Controller
 {
@@ -21,58 +22,58 @@ class WorkController extends Controller
     
     public function actor_create(Request $request)
     {
-        $this->validate($request, Work::$rules);
+        $this->validate($request, ActorWork::$rules);
         
-        $work = new Work;
+        $actors_works = new ActorWork;
         $form =$request->all();
         
         if(isset($form['image'])) {
-            $path = $request->file('image')->store('public/image');
-            $work->image_path = basename($path);
+            $path = $request->file('image')->store('public/actor/image');
+            $actors_works->image_path = basename($path);
         }else {
-            $work->image_path = null;
+            $actors_works->image_path = null;
         }
         
         unset($form['_token']);
         unset($form['image']);
         
-        $work->fill($form);
-        $work->save();
+        $actors_works->fill($form);
+        $actors_works->save();
         
-        return redirect('work.actor.create');
+        return redirect('work/actor/create');
     }
     public function creator_create(Request $request)
     {
-        $this->validate($request, Work::$rules);
+        $this->validate($request, CreatorWork::$rules);
         
-        $work = new Work;
+        $creators_works= new CreatorWork;
         $form =$request->all();
         
         if(isset($form['image'])) {
-            $path = $request->file('image')->store('public/image');
-            $work->image_path = basename($path);
+            $path = $request->file('image')->store('public/creator/image');
+            $creators_works->image_path = basename($path);
         }else {
-            $work->image_path = null;
+            $creators_works->image_path = null;
         }
         
         unset($form['_token']);
         unset($form['image']);
         
-        $work->fill($form);
-        $work->save();
+        $creators_works->fill($form);
+        $creators_works->save();
         
-        return redirect('work.creator.create');
+        return redirect('work/creator/create');
     }
     
     public function actor_index(Request $request) 
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = Work::where('title', $cond_tilte)->get();
+            $posts = ActorWork::where('title', $cond_tilte)->get();
         } else {
-            $posts = Work::all();
+            $posts = ActorWork::all();
             }
-            $posts = Work::all()->sortByDesc('updated_at');
+            $posts = ActorWork::all()->sortByDesc('updated_at');
 
         if (count($posts) > 0) {
             $headline = $posts->shift();
@@ -87,11 +88,11 @@ class WorkController extends Controller
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = Work::where('title', $cond_tilte)->get();
+            $posts = CreatorWork::where('title', $cond_tilte)->get();
         } else {
-            $posts = Work::all();
+            $posts = CreatorWork::all();
             }
-            $posts = Work::all()->sortByDesc('updated_at');
+            $posts = CreatorWork::all()->sortByDesc('updated_at');
 
         if (count($posts) > 0) {
             $headline = $posts->shift();
@@ -99,12 +100,12 @@ class WorkController extends Controller
             $headline = null;
         }
 
-        return view('creator.work.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('work.creator.index', ['headline' => $headline, 'posts' => $posts]);
             
     }
     public function edit(Request $request)
     {
-        $work = Work::find($request->id);
+        $work = ActorWork::find($request->id);
         if (empty($work)){
             abort(404);
         }

@@ -25,6 +25,14 @@ Route::get('/', function () {
     
     
         Route::get('actor','Admin\WorkController@actor_index');
+        Route::get('creator','Admin\WorkController@creator_index');
+        
+        
+        Route::get('actor/edit','Admin\WorkController@actor_edit');
+        Route::get('creator/edit','Admin\WorkController@creator_edit');
+        
+        Route::post('actor/edit','Admin\WorkController@actor_update');
+        Route::post('creator/edit','Admin\WorkController@creator_update');
 
 
 
@@ -40,16 +48,18 @@ Route::get('/', function () {
         Route::post('actor/create','Admin\ProfileController@actor_create');
         Route::post('creator/create','Admin\ProfileController@creator_create');
         
+        Route::get('actor','Admin\WorkController@actor_index');
+        Route::get('creator','Admin\WorkController@creator_index');
         
-        
-        Route::get('edit','Admin\ProfileController@edit');
+        Route::get('actor/edit','Admin\ProfileController@actor_edit');
+        Route::get('creator/edit','Admin\ProfileController@creator_edit');
     
         
         
-        Route::get('creator/work','Admin\WorkController@creator_index');
         
-        Route::get('work/edit','Admin\WorkController@edit');
-        Route::post('work/edit','Admin\WorkController@update');
+        
+        
+        
 });
 
     

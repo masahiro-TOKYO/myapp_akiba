@@ -4,10 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Work extends Model
+class CreatorWork extends Model
 {
     protected $guarded = array('id');
-    
     public static $rules = array(
         'caption' => 'required',
         );

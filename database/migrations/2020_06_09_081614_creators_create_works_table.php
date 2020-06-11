@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorkTable extends Migration
+class CreatorsCreateWorksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateWorkTable extends Migration
      */
     public function up()
     {
-        Schema::create('work', function (Blueprint $table) {
+        Schema::create('creators_works', function (Blueprint $table){
             $table->bigIncrements('id');
-            $table->string('image_path')->nullabale();
+            $table->string('image_path');
             $table->string('caption');
             $table->timestamps();
-        });
+    });
     }
 
     /**
@@ -28,6 +28,6 @@ class CreateWorkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('work');
+        Schema::dropIfExists('creators_works');
     }
 }

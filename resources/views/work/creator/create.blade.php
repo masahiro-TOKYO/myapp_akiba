@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h2>creator work</h2>
+                <h2>creator post the work</h2>
                 <form action="{{ action('Admin\WorkController@creator_create') }}" method="post" enctype="multipart/form-data">
 
 
