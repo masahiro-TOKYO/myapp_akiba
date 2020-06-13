@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\ActorWork;
-use App\CreatorWork;
+use App\ActorsWorks;
+use App\CreatorsWorks;
 
 class WorkController extends Controller
 {
@@ -22,9 +22,9 @@ class WorkController extends Controller
     
     public function actor_create(Request $request)
     {
-        $this->validate($request, ActorWork::$rules);
+        $this->validate($request, ActorsWorks::$rules);
         
-        $actors_works = new ActorWork;
+        $actors_works = new ActorsWorks;
         $form =$request->all();
         
         if(isset($form['image'])) {
@@ -44,9 +44,9 @@ class WorkController extends Controller
     }
     public function creator_create(Request $request)
     {
-        $this->validate($request, CreatorWork::$rules);
+        $this->validate($request, CreatorsWorks::$rules);
         
-        $creators_works= new CreatorWork;
+        $creators_works= new CreatorsWorks;
         $form =$request->all();
         
         if(isset($form['image'])) {
@@ -67,69 +67,94 @@ class WorkController extends Controller
     
     public function actor_index(Request $request) 
     {
+        
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = ActorWork::where('title', $cond_tilte)->get();
+            $posts = ActorsWorks::where('title', $cond_tilte)->get();
         } else {
-            $posts = ActorWork::all();
+            $posts = ActorsWorks::all();
             }
-            $posts = ActorWork::all()->sortByDesc('updated_at');
+            $posts = ActorsWorks::all()->sortByDesc('updated_at');
 
-        if (count($posts) > 0) {
-            $headline = $posts->shift();
-        } else {
-            $headline = null;
-        }
+        
 
-        return view('work.actor.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('work.actor.index', ['posts' => $posts,'cond_title' => $cond_title]);    
             
     }
     public function creator_index(Request $request) 
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = CreatorWork::where('title', $cond_tilte)->get();
+            $posts = CreatorsWorks::where('title', $cond_tilte)->get();
         } else {
-            $posts = CreatorWork::all();
+            $posts = CreatorsWorks::all();
             }
-            $posts = CreatorWork::all()->sortByDesc('updated_at');
+            $posts = CreatorsWorks::all()->sortByDesc('updated_at');
 
-        if (count($posts) > 0) {
-            $headline = $posts->shift();
-        } else {
-            $headline = null;
-        }
+        
 
-        return view('work.creator.index', ['headline' => $headline, 'posts' => $posts]);
+        return view('work.creator.index', [ 'posts' => $posts,'cond_title' => $cond_title]);
             
     }
-    public function edit(Request $request)
+    
+    public function creator_edit(Request $request)
     {
-        $work = ActorWork::find($request->id);
-        if (empty($work)){
+        $creators_works = CreatorsWorks::find($request->id);
+        if (empty($creators_works)){
             abort(404);
         }
-    return view('work.edit', ['work_form' => $work]);
+    return view('work.edit', ['work_form' => $creators_works]);
     }
     
-    public function update(Request $request)
+    public function actor_edit(Request $request)
+    {
+        $actors_works = ActorsWorks::find($request->id);
+        if (empty($actors_works)){
+            abort(404);
+        }
+    return view('work.edit', ['work_form' => $actors_works]);
+    }
+    
+    
+    public function actor_update(Request $request)
     {
         // validation
-        $this->validate($request, Work::$rules);
+        $this->validate($request, ActorsWorks::$rules);
         // Work model id を取得 
-        $work = Work::find($request->id);
+        $actors_works = ActorsWorks::find($request->id);
         // データの格納
         $work_form = $request->all();
         if (isset($work_form['image'])) {
-            $path = $request->file('image')->store('public/image');
+            $path = $request->file('image')->store('public/actor/image');
             unset($work_form['image']);
         } elseif (isset($request->remove)) {
-            $work->image_path = null;
+            $actors_works->image_path = null;
             unset($work_form['remove']);
         }
         unset($work_form['_token']);
         // データを上書き保存
-        $work->fill($work_form)->save();
+        $actors_works->fill($work_form)->save();
+        
+        return redirect('work');
+    }
+    public function creator_update(Request $request)
+    {
+        // validation
+        $this->validate($request, CreatorsWorks::$rules);
+        // Work model id を取得 
+        $creators_works = CreatorsWorks::find($request->id);
+        // データの格納
+        $work_form = $request->all();
+        if (isset($work_form['image'])) {
+            $path = $request->file('image')->store('public/creator/image');
+            unset($work_form['image']);
+        } elseif (isset($request->remove)) {
+            $creators_works->image_path = null;
+            unset($work_form['remove']);
+        }
+        unset($work_form['_token']);
+        // データを上書き保存
+        $creators_works->fill($work_form)->save();
         
         return redirect('work');
     }

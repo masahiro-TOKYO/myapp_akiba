@@ -1,12 +1,12 @@
 @extends('layouts.admin')
-@section('title','creator edit')
+@section('title','model edit')
 
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h2>creator edit </h2>
-                <form action="{{ action('Admin\WorkController@creator_update') }}" method="post" enctype="multpart/form-date">
+                <h2>model edit </h2>
+                <form action="{{ action('Admin\WorkController@actor_update') }}" method="post" enctype="multpart/form-date">
                     if (count($errors) > 0)
                     <ul>
                         @foreach($errors->all() as $e)

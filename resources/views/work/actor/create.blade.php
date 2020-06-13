@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 mx-auto">
-                <h2>model post the work</h2>
+                <h2>the model sheres the work</h2>
                 <form action="{{ action('Admin\WorkController@actor_create') }}" method="post" enctype="multipart/form-data">
 
 

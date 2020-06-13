@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CreatorWork extends Model
+class CreatorsWorks extends Model
 {
     protected $guarded = array('id');
     public static $rules = array(
