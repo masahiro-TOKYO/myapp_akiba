@@ -19,12 +19,6 @@
                         </ul>
                     @endif
                     <div class="form-group row">
-                        <label class="col-md-2">画像</label>
-                        <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="image">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-md-2">キャプション</label>
                         <div class="col-md-10">
                             <textarea class="form-control" name="caption" rows="10">{{ old('caption') }}</textarea>

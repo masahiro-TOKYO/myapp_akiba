@@ -6,13 +6,14 @@
         <div class="row">
             <h2>creator's worklist</h2>
         </div>
-        
         <div class="list-work row">
-            @foreach($posts as $post)
+            @foreach($posts as $creator_work)
                 <div class="col-md-3">
-                    @if ($post->image_path)
-                        <img src="{{ secure_asset('storage/creator/image/' . $post->image_path) }}">
-                    @endif
+                    <a href ='{{ route("creator/{id}",["id"=>$creator_works->id]) }}'>
+                        @if ($post->image_path)
+                            <img src="{{ secure_asset('storage/work_creator/image/' . $creator_work->image_path) }}">
+                        @endif
+                    </a>
                 </div>    
             @endforeach
         </div>

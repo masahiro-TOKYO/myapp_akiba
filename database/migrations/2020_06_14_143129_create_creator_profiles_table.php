@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActorsWorksTable extends Migration
-{
+class CreateCreatorProfilesTable extends Migration
     /**
      * Run the migrations.
      *
@@ -13,12 +12,17 @@ class CreateActorsWorksTable extends Migration
      */
     public function up()
     {
-        Schema::create('actors_works', function (Blueprint $table){
+        Schema::create('creator_profiles',function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->inte('user_id');
             $table->string('image_path');
-            $table->string('caption');
+            $table->string('name');
+            $table->string('age');
+            $table->string('gender');
+            $table->string('area');
+            $table->string('introduction');
             $table->timestamps();
-    });
+        });
     }
 
     /**
@@ -28,6 +32,6 @@ class CreateActorsWorksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('actors_works');
+        Schema::dropIfExists('creator_profiles');
     }
 }

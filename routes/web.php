@@ -33,7 +33,9 @@ Route::get('/', function () {
         
         Route::post('actor/edit','Admin\WorkController@actor_update');
         Route::post('creator/edit','Admin\WorkController@creator_update');
-
+        
+        Route::get('actor/{id}','Admin\WorkController@actor_show');
+        Route::get('creator/{id}','Admin\WorkController@creator_show');
 
 
 
@@ -48,12 +50,14 @@ Route::get('/', function () {
         Route::post('actor/create','Admin\ProfileController@actor_create');
         Route::post('creator/create','Admin\ProfileController@creator_create');
         
-        Route::get('actor','Admin\WorkController@actor_index');
-        Route::get('creator','Admin\WorkController@creator_index');
+        Route::get('actor','Admin\ProfileController@actor_index');
+        Route::get('creator','Admin\ProfileController@creator_index');
         
         Route::get('actor/edit','Admin\ProfileController@actor_edit');
         Route::get('creator/edit','Admin\ProfileController@creator_edit');
     
+        Route::get('actor/{id}','Admin\ProfileController@actor_show');
+        Route::get('creator/{id}','Admin\ProfileController@creator_show');
         
         
         

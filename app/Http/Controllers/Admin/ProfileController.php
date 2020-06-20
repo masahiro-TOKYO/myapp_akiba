@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Profile;
+use App\CreatorProfile;
+use App\ActorProfile;
 
 class ProfileController extends Controller
 {
@@ -24,58 +25,47 @@ class ProfileController extends Controller
     }
     
 
-    public function actor_create()
+    public function actor_create(Request $request)
     {
-        $this->validate($request, Profile::$rules);
-        $profile = new Profile;
+        $this->validate($request, ActorProfile::$rules);
+        $actor_profiles = new ActorProfile;
         $form = $request->all();
         
-        unset($form['_token']);
-        
-        $profile->fill($form);
-        $profile->save();
-        
         if(isset($form['image'])) {
-            $path = $request->file('image')->store('public/image');
-            $profile->image_path = basename($path);
+            $path = $request->file('image')->store('public/profile_actor/image');
+            $actor_profiles->image_path = basename($path);
         }else {
-            $profile->image_path = null;
+            $actor_profiles->image_path = null;
         }
         
         unset($form['_token']);
         unset($form['image']);
         
-        $profile->fill($form);
-        $profile->save();
+        $actor_profiles->fill($form);
+        $actor_profiles->save();
         
         
         return redirect('profile/actor/create');
         
     }
-    public function creator_create()
+    public function creator_create(Request $request)
     {
-        $this->validate($request, Profile::$rules);
-        $profile = new Profile;
+        $this->validate($request, CreatorProfile::$rules);
+        $creator_profiles = new CreatorProfile;
         $form = $request->all();
-        
-        unset($form['_token']);
-        
-        $profile->fill($form);
-        $profile->save();
-        
+
         if(isset($form['image'])) {
-            $path = $request->file('image')->store('public/image');
-            $profile->image_path = basename($path);
+            $path = $request->file('image')->store('public/profile_creator/image');
+            $creator_profiles->image_path = basename($path);
         }else {
-            $profile->image_path = null;
+            $creator_profiles->image_path = null;
         }
         
         unset($form['_token']);
         unset($form['image']);
         
-        $profile->fill($form);
-        $profile->save();
-        
+        $creator_profiles->fill($form);
+        $creator_profiles->save();
         
         return redirect('profile/creator/create');
         
@@ -85,37 +75,42 @@ class ProfileController extends Controller
     {
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = Profile::where('title', $cond_tilte)->get();
+            $posts = ActorProfile::where('title', $cond_tilte)->get();
         } else {
-            $posts = Profile::all();
+            $posts = ActorProfile::all();
             }
-            $posts = Profile::all()->sortByDesc('updated_at');
+            $posts = ActorProfile::all()->sortByDesc('updated_at');
 
-        if (count($posts) > 0) {
-            $headline = $posts->shift();
-        } else {
-            $headline = null;
-        }
-        return view('actor.profile.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('profile.actor.index', ['posts' => $posts,'cond_title' => $cond_title]);    
     }
     
     public function creator_index(Request $request) 
     {
+        
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = Profile::where('title', $cond_tilte)->get();
+            $posts = CreatorProfile::where('title', $cond_tilte)->get();
         } else {
-            $posts = Profile::all();
+            $posts = CreatorProfile::all();
             }
-            $posts = Profile::all()->sortByDesc('updated_at');
+            $posts = CreatorProfile::all()->sortByDesc('updated_at');
 
-        if (count($posts) > 0) {
-            $headline = $posts->shift();
-        } else {
-            $headline = null;
-        }
-        return view('creator.profile.index', ['headline' => $headline, 'posts' => $posts,'posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('profile.creator.index', ['posts' => $posts, 'cond_title' => $cond_title]);    
     }
+    
+    
+    public function actor_show(Request $request,$id,CreatorProfiles $actor_profiles)
+    {
+        return view('profile.actor.show',['posts' => $posts, 'cond_title ' => $cond_title]);
+    }
+    
+    public function creator_show(Request $request,$id,CreatorProfiles $creator_profiles)
+    {
+        return view('profile.creator.',['posts' => $posts, 'cond_title ' => $cond_title]);
+    }
+    
+   
+    
     
     public function edit()
     {
@@ -126,6 +121,8 @@ class ProfileController extends Controller
     {
         return redirect('profile/edit');
     }
+    
+    
 }
 
 

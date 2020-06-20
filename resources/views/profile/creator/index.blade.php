@@ -4,31 +4,24 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <h2>profile</h2>
+            <h2>creator's profile list</h2>
         </div>
-        <div class="row">
-            <div class="col-md-8">
-                <form action="{{ action('Admin\ProfileController@index') }}" method="get">
-                    <div class="form-group row">
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" name="cond_title" value="{{ $cond_title }}">
-                        </div>
-                        <div class="col-md-2">
-                            {{ csrf_field() }}
-                            <input type="submit" class="btn btn-default" value="検索">
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+
         <div class="row">
             <div class="list-work col-md-12 mx-auto">
                 <div class="row">
                     <table class="table table-light">
                         <tbody>
-                            @foreach($posts as $post)
+                            @foreach($posts as $creator_profile)
                                 @if ($post->image_path)
-                                    <img src="{{ asset('storage/image/' . $post->image_path) }}">
+                                    <a href ='{{ route("creator/{id}",["id" =>$creator_profiles->id]) }}'>
+                                        <img src="{{ asset('storage/profile_creator/image/' . $post->image_path) }}">
+                                        <td src="{{ $posts->name }}"></td>
+                                        <!--<td src="{{ $creator_profiles->age }}"></td>-->
+                                        <!--<td src="{{ $creator_profiles->gender }}"></td>-->
+                                        <!--<td src="{{ \Str::limit($creator_profiles->area,30) }}"></td>-->
+                                        <!--<td src="{{ \Str::limit($creator_profiles->introduction,30) }}"></td>-->
+                                    </a>
                                 @endif
                             @endforeach
                         </tbody> 

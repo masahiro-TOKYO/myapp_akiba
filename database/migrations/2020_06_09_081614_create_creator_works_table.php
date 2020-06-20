@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCreatorsWorksTable extends Migration
+class CreateCreatorWorksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateCreatorsWorksTable extends Migration
      */
     public function up()
     {
-        Schema::create('creators_works', function (Blueprint $table){
+        Schema::create('creator_works', function (Blueprint $table){
             $table->bigIncrements('id');
+            $table->integer('user_id');
             $table->string('image_path');
             $table->string('caption');
             $table->timestamps();
@@ -28,6 +29,6 @@ class CreateCreatorsWorksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('creators_works');
+        Schema::dropIfExists('creator_works');
     }
 }
