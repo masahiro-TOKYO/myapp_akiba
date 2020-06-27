@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCreatorProfilesTable extends Migration
+class CreateCreatorProfiles extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -12,9 +13,8 @@ class CreateCreatorProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('creator_profiles',function (Blueprint $table) {
+        Schema::create('creator_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->inte('user_id');
             $table->string('image_path');
             $table->string('name');
             $table->string('age');

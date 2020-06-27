@@ -16,7 +16,7 @@
                                 @if ($post->image_path)
                                     <a href ='{{ route("creator/{id}",["id" =>$creator_profiles->id]) }}'>
                                         <img src="{{ asset('storage/profile_creator/image/' . $post->image_path) }}">
-                                        <td src="{{ $posts->name }}"></td>
+                                        <!--<td src="{{ $posts->name }}"></td>-->
                                         <!--<td src="{{ $creator_profiles->age }}"></td>-->
                                         <!--<td src="{{ $creator_profiles->gender }}"></td>-->
                                         <!--<td src="{{ \Str::limit($creator_profiles->area,30) }}"></td>-->

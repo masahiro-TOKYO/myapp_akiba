@@ -25,10 +25,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-2">ユーザーID</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="user_id" value="{{ old('user_id') }}">
-                        </div>
+                        
                         <label class="col-md-2">ニックネーム</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="name" value="{{ old('name') }}">

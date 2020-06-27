@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\CreatorProfile;
 use App\ActorProfile;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -27,6 +29,9 @@ class ProfileController extends Controller
 
     public function actor_create(Request $request)
     {
+        if(!Auth::guard('actor')->check()) {
+            abort(403);
+        }
         $this->validate($request, ActorProfile::$rules);
         $actor_profiles = new ActorProfile;
         $form = $request->all();
@@ -45,11 +50,18 @@ class ProfileController extends Controller
         $actor_profiles->save();
         
         
+        $actor_profiles->user_id=Auth::guard('actor')->user()->id;
+        
         return redirect('profile/actor/create');
         
     }
+    
     public function creator_create(Request $request)
     {
+        if(!Auth::guard('creator')->check()) {
+            abort(403);
+        }
+        
         $this->validate($request, CreatorProfile::$rules);
         $creator_profiles = new CreatorProfile;
         $form = $request->all();
@@ -66,6 +78,8 @@ class ProfileController extends Controller
         
         $creator_profiles->fill($form);
         $creator_profiles->save();
+        
+        $creator_profiles->user_id=Auth::guard('creator')->user()->id;
         
         return redirect('profile/creator/create');
         

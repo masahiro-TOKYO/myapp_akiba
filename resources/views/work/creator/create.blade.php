@@ -9,8 +9,6 @@
             <div class="col-md-8 mx-auto">
                 <h2>the creator shares the work</h2>
                 <form action="{{ action('Admin\WorkController@creator_create') }}" method="post" enctype="multipart/form-data">
-
-
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)
@@ -19,11 +17,18 @@
                         </ul>
                     @endif
                     <div class="form-group row">
+                        <label class="col-md-2">画像</label>
+                        <div class="col-md-10">
+                            <input type="file" class="form-control-file" name="image">
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-md-2">キャプション</label>
                         <div class="col-md-10">
                             <textarea class="form-control" name="caption" rows="10">{{ old('caption') }}</textarea>
                         </div>
                     </div>
+                    <input type="hidden" name="id" value="{{ $form->id }}">
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-default" value="シェア">
                 </form>

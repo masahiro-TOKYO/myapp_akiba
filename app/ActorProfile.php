@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class ActorProfile extends Model
 {
     protected $table = 'actor_profiles';
-    protected $guarded = array('id');
-    public static $rules = array(
+    protected $guarded = ['id'];
+    public static $rules = [
+        'user_id' => 'required',
         'name' => 'required',
         'age' => 'required',
         'gender' => 'required',
         'area' => 'required',
         'introduction' => 'required',
-    );
+    ];
+    public function users()
+    {
+      return $this->hasMany('App\User');
+
+    }
 }

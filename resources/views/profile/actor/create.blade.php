@@ -65,6 +65,7 @@
                             <textarea class="form-control" name="introduction" rows="20">{{ old('introduction') }}</textarea>
                         </div>
                     </div>
+                    <input type="hidden" name="id" value="{{ $form->id }}">
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-primary" value="完了">
                 </form>

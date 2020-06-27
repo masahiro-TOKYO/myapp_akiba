@@ -22,6 +22,7 @@ class WorkController extends Controller
     
     public function actor_create(Request $request)
     {
+        
         $this->validate($request, ActorWork::$rules);
         
         $actor_works = new ActorWork;
@@ -44,10 +45,14 @@ class WorkController extends Controller
     }
     public function creator_create(Request $request)
     {
+        // クリエイターしか入れない
+        if(!Auth::guard('creator')->check()){
+            abort(403);
+        }
         $this->validate($request, CreatorWork::$rules);
         
         $creator_works = new CreatorWork;
-        $form =$request->all();
+        $form = $request->all();
         
         
         if(isset($form['image'])) {
@@ -59,6 +64,7 @@ class WorkController extends Controller
         unset($form['_token']);
         unset($form['image']);
         
+        $creator_works->creator_profile_id=Auth::guard('creator')->user()->id;
         $creator_works->fill($form);
         $creator_works->save();
          
@@ -86,15 +92,14 @@ class WorkController extends Controller
         // // 最新のレコードだけ表示
         // $creator_works = CreatorWork::with('work_creator_history_first'->get());
         $cond_title = $request->cond_title;
-        if ($cond_title != '' ) {
-            $posts = CreatorWork::where('title', $cond_tilte)->get();
-        } else {
+        // if ($cond_title != '' ) {
+        //     $posts = CreatorWork::where('title', $cond_tilte)->get();
+        // } else {
             $posts = CreatorWork::all();
-            }
+            // }
             $posts = CreatorWork::all()->sortByDesc('updated_at');
-        // dd($creator_works);
 
-        return view('work.creator.index', ['posts' => $posts, 'cond_title' => $cond_title]);
+        return view('work.creator.index', ['posts' => $posts]);
     }
     
     // public function creator_show(Request $request)
