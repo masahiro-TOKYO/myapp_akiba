@@ -15,6 +15,7 @@ class CreateCreatorProfiles extends Migration
     {
         Schema::create('creator_profiles', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('user_id');
             $table->string('image_path');
             $table->string('name');
             $table->string('age');

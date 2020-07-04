@@ -36,4 +36,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function work_creator()
+    {
+        return $this->hasMany('App\CreatorWork');
+    }
+    public function work_creator_first()
+    {
+        return $this->hasOne('App\CreatorWork');
+    }
 }

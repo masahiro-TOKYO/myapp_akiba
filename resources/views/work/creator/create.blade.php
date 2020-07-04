@@ -28,7 +28,7 @@
                             <textarea class="form-control" name="caption" rows="10">{{ old('caption') }}</textarea>
                         </div>
                     </div>
-                    <input type="hidden" name="id" value="{{ $form->id }}">
+                    
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-default" value="シェア">
                 </form>

@@ -18,17 +18,17 @@ Route::get('/', function () {
 // リダイレクト処理　middleware('auth')
     Route::group(['prefix' => 'work','middleware' =>'creator'], function(){
     
-        Route::get('creator/create','Admin\WorkController@creator_add');
+        Route::get('creator/create','Admin\WorkController@creator_add')->name('work.creator.add');
         
-        Route::post('creator/create','Admin\WorkController@creator_create');    
+        Route::post('creator/create','Admin\WorkController@creator_create')->name('work.creator.create');    
     
-        Route::get('creator','Admin\WorkController@creator_index');
+        Route::get('creator','Admin\WorkController@creator_index')->name('work.creator.index');
         
-        Route::get('creator/edit','Admin\WorkController@creator_edit');
+        Route::get('creator/edit','Admin\WorkController@creator_edit')->name('work.creator.edit');
         
-        Route::post('creator/edit','Admin\WorkController@creator_update');
+        Route::post('creator/edit','Admin\WorkController@creator_update')->name('work.creator.update');
         
-        Route::get('creator/{id}','Admin\WorkController@creator_show');
+        Route::get('creator/{id}','Admin\WorkController@creator_show')->name('work.creator.show');
 
 });
 
@@ -53,17 +53,17 @@ Route::get('/', function () {
 
     Route::group(['prefix' => 'profile','middleware' =>'creator'], function(){
         
-        Route::get('choice_job','Admin\ProfileController@choice_job');
+        Route::get('choice_job','Admin\ProfileController@choice_job')->name('profile.creator.coice_job');
         
-        Route::get('creator/create','Admin\ProfileController@creator_add');
+        Route::get('creator/create','Admin\ProfileController@creator_add')->name('profile.creator.add');
         
-        Route::post('creator/create','Admin\ProfileController@creator_create');
+        Route::post('creator/create','Admin\ProfileController@creator_create')->name('profile.creator.create');
         
-        Route::get('creator','Admin\ProfileController@creator_index');
+        Route::get('creator','Admin\ProfileController@creator_index')->name('profile.creator.index');
     
-        Route::get('creator/edit','Admin\ProfileController@creator_edit');
+        Route::get('creator/edit','Admin\ProfileController@creator_edit')->name('profile.creator.edit');
         
-        Route::get('creator/{id}','Admin\ProfileController@creator_show');
+        Route::get('creator/{id}','Admin\ProfileController@creator_show')->name('profile.creator.show');
         
 });
 

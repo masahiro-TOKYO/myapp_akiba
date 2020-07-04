@@ -15,7 +15,7 @@ class CreateCreatorWorksTable extends Migration
     {
         Schema::create('creator_works', function (Blueprint $table){
             $table->bigIncrements('id');
-            $table->integer('creator_profile_id');
+            $table->integer('user_id');
             $table->string('image_path');
             $table->string('caption');
             $table->timestamps();

@@ -9,7 +9,6 @@ class CreatorProfile extends Model
     protected $table = 'creator_profiles';
     protected $guarded = ['id'];
     public static $rules = [
-        'user_id' => 'required',
         'name' => 'required',
         'age' => 'required',
         'gender' => 'required',
