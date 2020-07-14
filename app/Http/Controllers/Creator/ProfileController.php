@@ -16,25 +16,14 @@ use App\ActorWork;
 class ProfileController extends Controller
 {
     
-    public function choice_job()
-    {
-        return view('profile.choice_job');
-    }
-    
-  
     public function creator_add()
     {
+        if(Auth::User()->isCreatedProfile()) abort(403);
         return view('profile.creator.create');
     }
     
     public function creator_create(Request $request)
-    {
-        // ログイン しているユーザーを取得 かつ　roleにデータがあれば403
-
-        // if(!Auth::check() || Auth::creator_profile()->role(){
-        //     abort(403);
-        // }
-        
+    {        
         $this->validate($request, CreatorProfile::$rules);
         $creator_profiles = new CreatorProfile;
         $form = $request->all();

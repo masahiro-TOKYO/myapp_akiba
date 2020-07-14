@@ -16,17 +16,12 @@ class ProfileController extends Controller
       
     public function actor_add()
     {
+        if(Auth::User()->isCreatedProfile()) abort(403);
         return view('profile.actor.create');
     }
     
     public function actor_create(Request $request)
-    {
-        // ログイン しているユーザーを取得 かつ　roleにデータがあれば403
-
-        // if(!Auth::check() || Auth::actor_profile()->role(){
-        //     abort(403);
-        // }
-        
+    {   
         $this->validate($request, ActorProfile::$rules);
         $actor_profiles = new ActorProfile;
         $form = $request->all();
