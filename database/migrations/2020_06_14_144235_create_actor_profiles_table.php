@@ -15,7 +15,7 @@ class CreateActorProfilesTable extends Migration
     {
         Schema::create('actor_profiles',function (Blueprint $table) {
             $table->bigIncrements('id');
-            
+            $table->integer('user_id')->unsigned();
             $table->string('image_path');
             $table->string('name');
             $table->string('age');

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use App\ActorProfile;
+use App\CreatorProfile;
+
 class LoginController extends Controller
 {
     /*
@@ -26,6 +29,35 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+
+    public function redirectTo()
+    {
+        $user = $this->guard()->user();
+        $role = $user->role;
+        if($role === 'creator')
+        {
+            if($user->isCreatedProfile())
+            {
+                return route('mypage');
+            }
+            else
+            {
+                return route('profile.creator.add');
+            }
+        }
+
+        if($role === 'actor')
+        {
+            if($user->isCreatedProfile())
+            {
+                return route('mypage');
+            }
+            else
+            {
+                return route('profile.actor.add');
+            }
+        }
+    }
 
     /**
      * Create a new controller instance.

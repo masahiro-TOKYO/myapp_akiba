@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Creator;
 
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+use App\User;
 use App\CreatorProfile;
 use App\ActorProfile;
-use Illuminate\Support\Facades\Auth;
+use App\CreatorWork;
+use App\ActorWork;
 
 class ProfileController extends Controller
 {
@@ -45,12 +49,13 @@ class ProfileController extends Controller
         unset($form['_token']);
         unset($form['image']);
         
-        $creator_profiles->fill($form);
-        $creator_profiles->user_id=Auth::user()->id;
-        $creator_profiles->save();
-        
         $user = Auth::user();
-        $user->role='creator';
+
+        $creator_profiles->fill($form);
+        $creator_profiles->user_id = $user->id;
+        $creator_profiles->save();
+
+        $user->profile_status=1;
         $user->save();
         
         return redirect()->route('profile.creator.index');
@@ -59,26 +64,32 @@ class ProfileController extends Controller
     
     public function creator_index(Request $request) 
     {
-        
+        //ペジネーションを利用しましょう
+        //paginate()を使用することで、自動的にページめくりのリンクが作成されます。
+        //paginate(数字)で、(数字)件で区切って次のページを作成します。
+        //数字を指定しない場合、15件です。
+        //取得したデータの件数がこの数字以下の場合は、リンク表示はされません。（<|1,2,3|>)が表示されない）
         $cond_title = $request->cond_title;
         if ($cond_title != '' ) {
-            $posts = CreatorProfile::where('title', $cond_tilte)->get();
+            $creators = CreatorProfile::where('title', $cond_tilte)->orderBy('created_at','desc')->paginate(3);
         } else {
-            $posts = CreatorProfile::all();
+            $creators = CreatorProfile::orderBy('created_at','desc')->paginate(3);
             }
-        $posts = CreatorProfile::all()->sortByDesc('updated_at');
 
-        return view('profile.creator.index', ['posts' => $posts, 'cond_title' => $cond_title]);    
+        return view('profile.creator.index', ['creators' => $creators, 'cond_title' => $cond_title]);    
     }
     
     public function creator_show($id)
     {
-        $creator_profile = CreatorProfile::where('user_id',$id)->get();
-        if(!$creator_profile) abort(404);
-        
-        $user = Auth::user();
-        
-        return view()->name('profile.creator.show');
+        $creator = User::find($id);
+        if(!$creator) abort(404);
+
+        $works = CreatorWork::where('user_id',$creator->id)->get();
+    
+        return view('profile.creator.show',[
+            'creator' => $creator,
+            'works' => $works
+        ]);
     }
 
     public function edit()

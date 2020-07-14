@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('profile/choice_job');
+        $user = Auth::User();
+        $works = $user->works;
+        return view('mypage',[
+            'user' => $user,
+            'works' => $works,
+        ]);
     }
 }

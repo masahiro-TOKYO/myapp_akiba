@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Creator;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,29 +49,21 @@ class WorkController extends Controller
     public function creator_index(Request $request) 
     {
 
-        // 最新のレコードだけ表示
-        $creator_works = User::with(['work_creator'])->orderBy('created_at','desc')->get();
-        $creator_works = User::with('work_creator')->orderBy('created_at','asc')->first()->toSql();
-        dd($creator_works);
-        // $creator_works = User::with('work_creator')->get();
-        
+        // 各クリエーターの最新ワークだけ表示
+        $creator_works = User::with(['creator_works_first'])->orderBy('created_at','desc')->get();
         
         $cond_title = $request->cond_title;
-        
-        // $posts = CreatorWork::all();
-        // $posts = CreatorWork::all()->sortByDesc('updated_at');
 
-        return view('work.creator.index', ['creator_works' => $creator_works,"cond_title" => $cond_title]);
+        return view('work.creator.index', ['works' => $creator_works,"cond_title" => $cond_title]);
     }
     
     public function creator_show(Request $request)
     {
-        
-        $creator_works = CreatorWork::find($request->id);
-        if (empty($creator_works)){
+        $creator_work = CreatorWork::find($request->id);
+        if (empty($creator_work)){
             abort(404);
         }
-        return view('work.creator.{id}',['work_form' => $creator_works,'posts' => $posts, 'cond_title ' => $cond_title]);
+        return view('work.creator.show',['work' => $creator_work]);
     }
     public function creator_update(Request $request)
     {

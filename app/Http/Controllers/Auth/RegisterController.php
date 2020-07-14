@@ -30,6 +30,18 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+    public function redirectTo()
+    {
+        $role = $this->guard()->user()->role;
+        if($role === 'creator'){
+          return route('profile.creator.add');
+        }
+        if($role === 'actor'){
+          return route('profile.actor.add');
+        }
+    }
+    
+
     /**
      * Create a new controller instance.
      *
@@ -67,6 +79,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'role' => $data['role'],
+            'profile_status' => 0,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

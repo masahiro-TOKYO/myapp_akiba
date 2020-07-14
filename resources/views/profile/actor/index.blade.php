@@ -11,12 +11,11 @@
                 <div class="row">
                     <table class="table table-light">
                         <tbody>
-                            @foreach($posts as $post)
-                                @if ($post->image_path)
-                                    <a href="{{ action('actor/{id}','Admin\ProfileController@actor_show') }}">
-                                        <img src="{{ asset('storage/profile_actor/image/' . $post->image_path) }}">
+                            @foreach($actors as $actor)
+                               
+                                    <a href="{{route('profile.actor.show',$actor->id)}}">
+                                        <img src="{{ asset('storage/profile_actor/image/' . $actor->image_path) }}">
                                     </a>
-                                @endif
                             @endforeach    
                         </tbody> 
                     </table>

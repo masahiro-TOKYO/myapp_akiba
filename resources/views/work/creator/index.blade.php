@@ -11,19 +11,18 @@
                 <div class="row">
                     <table class="table table-light">
                         <tbody>
-                            @foreach($creator_works as $creator_work)
-                            @php dd($creator_work->work_creator);@endphp
-                            
-                                @if (optional($creator_work->work_creator)->first()->image_path)
+                            @foreach($works as $work)
+
+                                @if(optional($work->creator_works_first)->image_path)
                                     <tr>
-                                        <tb class="table-img">
+                                        <td class="table-img">
                                             <div class="box-img">
-                                                <a href ='{{ route("profile.creator.show",$creator_work->id) }}'>
-                                                    <img src="{{ secure_asset('storage/work_creator/image/' . $creator_work->work_creator->first()->image_path) }}">
+                                                <a href ='{{ route("work.creator.show",optional($work->creator_works_first)->id) }}'>
+                                                    <img src="{{ asset('storage/work_creator/image/' . optional($work->creator_works_first)->image_path) }}">
                                                 </a>
                                             </div>
-                                            <div text="box-textarea">{{ \Str::limit(optional($creator_work->work_creator)->first()->caption,30) }}</div>
-                                        </tb>
+                                            <div text="box-textarea">{{ \Str::limit(optional($work->creator_works_first)->caption,30) }}</div>
+                                        </td>
                                     </tr>
                                 @endif
                                 

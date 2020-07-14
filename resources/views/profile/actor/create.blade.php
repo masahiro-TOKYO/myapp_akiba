@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h3>model profile</h3>
-                <form action="{{ action('Admin\ProfileController@actor_create') }}" method="post" enctype="multipart/form-data">
+                <form action="" method="post" enctype="multipart/form-data">
                     @if (count($errors) > 0)
                         <ul>
                             @foreach($errors->all() as $e)
@@ -21,7 +21,7 @@
                     <div class="form-group row">
                         <label class="col-md-2">プロフィール画像</label>
                         <div class="col-md-10">
-                            <input type="file" class="form-control-file" name="image_path">
+                            <input type="file" class="form-control-file" name="image">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -65,7 +65,7 @@
                             <textarea class="form-control" name="introduction" rows="20">{{ old('introduction') }}</textarea>
                         </div>
                     </div>
-                    <input type="hidden" name="id" value="{{ $form->id }}">
+                    
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-primary" value="完了">
                 </form>

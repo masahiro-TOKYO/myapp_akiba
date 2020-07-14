@@ -15,81 +15,62 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// リダイレクト処理　middleware('auth')
-    Route::group(['prefix' => 'work','middleware' =>'creator'], function(){
-    
-        Route::get('creator/create','Admin\WorkController@creator_add')->name('work.creator.add');
-        
-        Route::post('creator/create','Admin\WorkController@creator_create')->name('work.creator.create');    
-    
-        Route::get('creator','Admin\WorkController@creator_index')->name('work.creator.index');
-        
-        Route::get('creator/edit','Admin\WorkController@creator_edit')->name('work.creator.edit');
-        
-        Route::post('creator/edit','Admin\WorkController@creator_update')->name('work.creator.update');
-        
-        Route::get('creator/{id}','Admin\WorkController@creator_show')->name('work.creator.show');
-
+Route::group(['middleware' => 'auth'], function(){
+    Route::get('mypage',  'MypageController@mypage')->name('mypage');
+    //プロフィール、パスワード編集画面を作成してここでルーティング
 });
 
-    Route::group(['prefix' => 'work','middleware' =>'actor'], function(){
-        
-        Route::get('actor/create','Admin\WorkController@actor_add');
-
-        Route::post('actor/create','Admin\WorkController@actor_create');
-
-        Route::get('actor','Admin\WorkController@actor_index');
-        
-        Route::get('actor/edit','Admin\WorkController@actor_edit');
-        
-        Route::post('actor/edit','Admin\WorkController@actor_update');
-        
-        Route::get('actor/{id}','Admin\WorkController@actor_show');
-        
-});
-
-
-
-
-    Route::group(['prefix' => 'profile','middleware' =>'creator'], function(){
-        
-        Route::get('choice_job','Admin\ProfileController@choice_job')->name('profile.creator.coice_job');
-        
-        Route::get('creator/create','Admin\ProfileController@creator_add')->name('profile.creator.add');
-        
-        Route::post('creator/create','Admin\ProfileController@creator_create')->name('profile.creator.create');
-        
-        Route::get('creator','Admin\ProfileController@creator_index')->name('profile.creator.index');
+Route::group(['prefix' => 'profile'], function(){
+    //クリエーター
+    Route::group(['middleware' => 'creator'], function(){
+        //プロフィール作成
+        Route::get('creator/create',  'Creator\ProfileController@creator_add')->name('profile.creator.add');
+        Route::post('creator/create','Creator\ProfileController@creator_create')->name('profile.creator.create');
+    });
+    //プロフィール一覧
+    Route::get('creator','Creator\ProfileController@creator_index')->name('profile.creator.index');
+    //プロフィール詳細
+    Route::get('creator/{id}','Creator\ProfileController@creator_show')->name('profile.creator.show');
     
-        Route::get('creator/edit','Admin\ProfileController@creator_edit')->name('profile.creator.edit');
-        
-        Route::get('creator/{id}','Admin\ProfileController@creator_show')->name('profile.creator.show');
-        
+    //アクター
+    Route::group(['middleware' => 'actor'], function(){
+        //プロフィール作成
+        Route::get('actor/create','Actor\ProfileController@actor_add')->name('profile.actor.add');
+        Route::post('actor/create','Actor\ProfileController@actor_create')->name('profile.actor.create');
+    });
+    //プロフィール一覧
+    Route::get('actor','Actor\ProfileController@actor_index')->name('profile.actor.index');
+    //プロフィール詳細
+    Route::get('actor/{id}','Actor\ProfileController@actor_show')->name('profile.actor.show');
+    
 });
 
+//クリエーターワーク
+Route::group(['middleware' => 'creator','prefix' => 'creator/{creator_id}/work'], function(){
+    Route::get('create','Creator\WorkController@creator_add')->name('work.creator.add');
+    Route::post('create','Creator\WorkController@creator_create')->name('work.creator.create'); 
+    Route::get('{work_id}/edit','Creator\WorkController@creator_edit')->name('work.creator.edit');
+    Route::post('{work_id}/edit','Creator\WorkController@creator_update')->name('work.creator.update');
+});
+//クリエーターワーク一覧
+Route::get('creator/work','Creator\WorkController@creator_index')->name('work.creator.index');
+//クリエーターワーク詳細
+Route::get('creator/{creator_id}/work/{work_id}','Creator\WorkController@creator_show')->name('work.creator.show');
 
-    Route::group(['prefix' => 'profile','middleware' =>'actor'], function(){
-
-        Route::get('actor/create','Admin\ProfileController@actor_add');
+//アクターワーク
+Route::group(['middleware' => 'actor','prefix' => 'actor/{actor_id}/work'], function(){
+    Route::get('create',  'Actor\WorkController@actor_add')->name('work.actor.add');
+    Route::post('create',  'Actor\WorkController@actor_create')->name('work.actor.create'); 
+    Route::get('{work_id}/edit',   'Actor\WorkController@actor_edit')->name('work.actor.edit');
+    Route::post('{work_id}/edit',   'Actor\WorkController@actor_update')->name('work.actor.update');
+});
+//アクターワーク一覧
+Route::get('actor/work',   'Actor\WorkController@actor_index')->name('work.actor.index');
+//アクターワーク詳細
+Route::get('actor/{actor_id}/work/{work_id}',   'Actor\WorkController@actor_show')->name('work.actor.show');
         
-        Route::post('actor/create','Admin\ProfileController@actor_create');
-        
-        Route::get('actor','Admin\ProfileController@actor_index');
-        
-        Route::get('actor/edit','Admin\ProfileController@actor_edit');
-        
-        Route::get('actor/{id}','Admin\ProfileController@actor_show');
-        
-    });        
-        
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

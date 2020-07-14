@@ -20,6 +20,6 @@ class Actor
                 return $next($request);
             }
         }
-        aborts(403, '管理者権限がありません。');
+        abort(403, '管理者権限がありません。');
     }
 }

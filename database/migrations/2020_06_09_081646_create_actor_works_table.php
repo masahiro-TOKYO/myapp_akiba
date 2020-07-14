@@ -15,7 +15,7 @@ class CreateActorWorksTable extends Migration
     {
         Schema::create('actor_works', function (Blueprint $table){
             $table->bigIncrements('id');
-            
+            $table->integer('user_id')->unsigned();
             $table->string('image_path');
             $table->string('caption');
             $table->timestamps();

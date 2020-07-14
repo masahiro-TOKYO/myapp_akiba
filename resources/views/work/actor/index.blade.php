@@ -12,7 +12,7 @@
                 <div class="col-md-3">
                     @if ($post->image_path)
                         <a href="{{ action('Admin\WorkController@actor_show', ['id' => $actor_works->id]) }}">
-                            <img src="{{ secure_asset('storage/work_actor/image/' . $post->image_path ) }}">
+                            <img src="{{ asset('storage/work_actor/image/' . $post->image_path ) }}">
                         </a>
                     @endif
                 </div>    
